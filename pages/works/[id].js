@@ -12,9 +12,7 @@ const PokePage = ({ name }) => {
 }
 
 export async function getStaticPaths() {
-  const res = await fetch(
-    'https://pokeapi.co/api/v2/pokemon?offset=0&limit=1118'
-  )
+  const res = await fetch('https://pokeapi.co/api/v2/pokemon?offset=0&limit=10')
   const pokemons = await res.json()
   const paths = pokemons.results.map(path => ({
     params: {
@@ -28,9 +26,12 @@ export async function getStaticPaths() {
   }
 }
 
-export async function getStaticProps({ params }) {
+export async function getStaticProps(context) {
+  console.log(context)
   try {
-    const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${params.id}`)
+    const res = await fetch(
+      `https://pokeapi.co/api/v2/pokemon/${context.params.id}`
+    )
     const pokemon = await res.json()
     return {
       props: {
